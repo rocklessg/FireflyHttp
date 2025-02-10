@@ -46,10 +46,30 @@ dotnet add package FireflyHttp
 
 	var response = await Firefly.Delete("https://httpbin.org/delete");
 	Console.WriteLine(response);
-	POST Request (XML)
 
-var data = "<ExampleModel><Id>1</Id><Name>Firefly XML</Name></ExampleModel>";
-var data = new ExampleModel { Id = 1, Name = "Firefly XML" };
-var response = await Firefly.PostXml("https://httpbin.org/post", data);
-Console.WriteLine(response);
-Features
+
+# POST Request (XML)
+
+	// using raw XML string payload
+	var data = "<ExampleModel><Id>1</Id><Name>Firefly XML</Name></ExampleModel>";
+	var response = await Firefly.PostXml("https://httpbin.org/post", data);
+	Console.WriteLine(response);
+
+	// using object to serialize to XML
+	var data = new ExampleModel { Id = 1, Name = "Firefly XML" };
+	var response = await Firefly.PostXml("https://httpbin.org/post", data);
+	Console.WriteLine(response);
+
+
+## **Features**
+
+✔️ Simple and clean API for making HTTP requests.
+✔️ Supports JSON and XML payloads.
+✔️ Custom headers support.
+✔️ Configurable request timeout.
+✔️ Logging support.
+
+
+## **License**
+
+MIT License

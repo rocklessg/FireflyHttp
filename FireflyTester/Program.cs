@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 //Console.WriteLine("Hello, World!");
+using System;
 using FireflyHttp;
 using FireflyTester;
 
@@ -40,10 +41,15 @@ var xmlResponse = await Firefly.GetXml("https://www.w3schools.com/xml/note.xml")
 Console.WriteLine(xmlResponse);
 
 
-// ✅ 6. POST XML Request
+// ✅ 6i. POST XML Request (using C# Object)
 var xmlPostResponse = await Firefly.PostXml("https://httpbin.org/post",
     new SampleXmlRequest { Name = "John Doe", Age = 30 });
 Console.WriteLine("POST XML Response: " + xmlPostResponse);
+
+// ✅ 6ii. POST XML Request (using raw XML string)
+var rawXml = "<ExampleModel><Age>18</Age><Name>Firefly XML</Name></ExampleModel>";
+var response1 = await Firefly.PostXml("https://postman-echo.com/post", rawXml);
+Console.WriteLine("Raw XML Response: " + response1);
 
 // ✅ 7. PUT XML Request
 var xmlPutResponse = await Firefly.PutXml("https://httpbin.org/put",

@@ -74,8 +74,7 @@ namespace FireflyHttp
         public static async Task<string> Delete(string url, object? headers) =>
             await SendRequest<object>(HttpMethod.Delete, url, headers);
 
-        #endregion       
-
+        #endregion
 
         #region SOAP Service
 
@@ -154,10 +153,18 @@ namespace FireflyHttp
 
                     if (isXml)
                     {
-                        var serializer = new XmlSerializer(typeof(T));
-                        using var stringWriter = new StringWriter();
-                        serializer.Serialize(stringWriter, data);
-                        content = stringWriter.ToString();
+                        // Use the provided XML string directly
+                        if (data is string rawXml)
+                        {
+                            content = rawXml;
+                        }
+                        else
+                        {
+                            var serializer = new XmlSerializer(typeof(T));
+                            using var stringWriter = new StringWriter();
+                            serializer.Serialize(stringWriter, data);
+                            content = stringWriter.ToString();
+                        }
                         mediaType = "application/xml";
                     }
                     else
@@ -183,4 +190,3 @@ namespace FireflyHttp
         }
     }
 }
-
