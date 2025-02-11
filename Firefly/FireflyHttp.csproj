@@ -17,14 +17,15 @@
 		<PackageTags>HTTP REST JSON XML</PackageTags>
 		<IncludeBuildOutput>true</IncludeBuildOutput>
 		<IncludeSymbols>false</IncludeSymbols>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>		
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		
+		<!-- Add PackageReadmeFile -->
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.1" />
-		<None Include="README.md" Pack="true" PackagePath="" />
 	</ItemGroup>
 
 </Project>
-
