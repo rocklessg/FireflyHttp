@@ -130,19 +130,35 @@ namespace FireflyHttp
 
         /// <summary>
         /// Internal method for sending HTTP requests with optional headers and payloads.
-        /// </summary>
-        private static async Task<string> SendRequest<T>(HttpMethod method, string url, object? headers = null, T? data = default, bool isXml = false)
+        /// </summary>        
+        public static async Task<string> SendRequest<T>(
+            HttpMethod method, 
+            string url, 
+            object? headers = null, 
+            T? data = default, 
+            bool isXml = false,
+            HttpClient? client = null)
         {
             try
             {
                 using var request = new HttpRequestMessage(method, url);
                 _logger?.LogInformation($"Sending {method} request to {url}");
 
+                // Use provided HttpClient or fall back to default instance
+                var httpClient = client ?? _httpClient;
+
+                // Convert headers from object to dictionary if necessary
                 if (headers is not null)
                 {
-                    foreach (var property in headers.GetType().GetProperties())
+                    var headersDict = headers as Dictionary<string, string>
+                        ?? headers.GetType().GetProperties().ToDictionary(
+                            prop => prop.Name,
+                            prop => prop.GetValue(headers)?.ToString() ?? string.Empty
+                        );
+
+                    foreach (var (key, value) in headersDict)
                     {
-                        request.Headers.Add(property.Name, property.GetValue(headers)?.ToString());
+                        request.Headers.Add(key, value);
                     }
                 }
 
@@ -153,7 +169,6 @@ namespace FireflyHttp
 
                     if (isXml)
                     {
-                        // Use the provided XML string directly
                         if (data is string rawXml)
                         {
                             content = rawXml;
@@ -176,7 +191,7 @@ namespace FireflyHttp
                     request.Content = new StringContent(content, Encoding.UTF8, mediaType);
                 }
 
-                using var response = await _httpClient.SendAsync(request);
+                using var response = await httpClient.SendAsync(request);
                 response.EnsureSuccessStatusCode();
                 var responseBody = await response.Content.ReadAsStringAsync();
                 _logger?.LogInformation($"Response received from {url}: {responseBody}");
