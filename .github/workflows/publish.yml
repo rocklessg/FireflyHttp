@@ -30,5 +30,4 @@ jobs:
         run: dotnet pack --configuration Release --no-build --output nupkg
 
       - name: Publish to NuGet
-        if: github.event.pull_request.merged == true
         run: dotnet nuget push nupkg/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
