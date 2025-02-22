@@ -30,8 +30,8 @@
 
 	<ItemGroup>
 		<!-- Explicitly include README.md -->
-		<None Include=".github\workflows\publish.yml" />
 		<None Include="README.md" Pack="true" PackagePath="README.md" />
+		<None Include=".github\workflows\publish.yml" />
 	</ItemGroup>
 
 </Project>
