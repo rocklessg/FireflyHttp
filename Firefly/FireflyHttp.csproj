@@ -7,7 +7,7 @@
 
 		<!-- NuGet Package Metadata -->
 		<PackageId>FireflyHttp</PackageId>
-		<Version>1.1.0</Version>
+		<Version>1.2.0</Version>
 		<Authors>Abdulhafiz Suleiman</Authors>
 		<Company>Cradlee Edu</Company>
 		<Description>A lightweight C# HTTP client for RESTful and SOAP services with minimal configuration.</Description>
