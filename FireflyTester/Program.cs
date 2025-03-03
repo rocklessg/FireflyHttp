@@ -6,4 +6,5 @@ using FireflyTester;
 Console.OutputEncoding = System.Text.Encoding.UTF8;
 Console.WriteLine("Testing Firefly HTTP Requests...\n");
 
-await FireflyHttp_v1_1_0_Test.RunTests();
+//await FireflyHttp_v1_1_0_Test.RunTests();
+await SampleUploadFiles.RunTests();
