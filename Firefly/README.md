@@ -73,3 +73,15 @@ dotnet add package FireflyHttp
 ## **License**
 
 MIT License
+
+
+## Changelog
+
+### v1.2.0
+- Added support for `MultipartFormDataContent`, `ByteArrayContent`, and `StreamContent`.
+- Improved error handling.
+
+### v1.3.0
+- Added `DownloadFileAsStream` for handling file downloads.
+- Improved request logging with `ILogger` support.
+- Optimized request handling for performance improvements.

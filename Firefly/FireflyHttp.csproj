@@ -7,7 +7,7 @@
 
 		<!-- NuGet Package Metadata -->
 		<PackageId>FireflyHttp</PackageId>
-		<Version>1.2.0</Version>
+		<Version>1.3.0</Version>
 		<Authors>Abdulhafiz Suleiman</Authors>
 		<Company>Cradlee Edu</Company>
 		<Description>A lightweight C# HTTP client for RESTful and SOAP services with minimal configuration.</Description>
@@ -21,6 +21,18 @@
 
 		<!-- Add PackageReadmeFile -->
 		<PackageReadmeFile>README.md</PackageReadmeFile>
+
+		<!-- Release Notes -->
+		<PackageReleaseNotes>
+			- Added DownloadFileAsStream implementations for handling file downloads.
+			- Improved request logging with ILogger support.
+			- Optimized internal request handling for better performance.
+			- Implemented support for custom request headers for xml (SOAP service) requests.
+			- Added support for custom response deserialization for Json and Xml requests.
+
+			This updates maintains full compatibility with previous versions—no breaking changes introduced
+			For implementation examples, checkout https://github.com/rocklessg/FireflyHttp/tree/main/FireflyTester
+		</PackageReleaseNotes>
 
 	</PropertyGroup>
 
