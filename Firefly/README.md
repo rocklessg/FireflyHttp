@@ -73,3 +73,21 @@ dotnet add package FireflyHttp
 ## **License**
 
 MIT License
+
+
+## Changelog
+
+### v1.1.0
+- Support BaseAddress so users can configure it once instead of repeating full URLs.
+- Support default headers to avoid setting them manually for every request.
+- Change headers input parameter to `Dictionary<string, string>` for better usability.
+
+### v1.2.0
+- Added support for `MultipartFormDataContent`.
+- Improved error handling.
+
+### v1.3.0
+- Added `DownloadFileAsStream` for handling stream response.
+- Support automatic response deserialization (JSON & XML)
+- Improved request logging.
+- Optimized request handling for performance improvements.

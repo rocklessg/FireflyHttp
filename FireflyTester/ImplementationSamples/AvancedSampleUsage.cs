@@ -1,8 +1,8 @@
 ﻿using FireflyHttp;
 
-namespace FireflyTester
+namespace FireflyTester.ImplementationSamples
 {
-    public static class FireflyHttp_v1_1_0_Test
+    public static class AvancedSampleUsage
     {
         public static async Task RunTests()
         {
@@ -49,7 +49,7 @@ namespace FireflyTester
             Console.WriteLine("\n🔹 Test: POST Request with XML");
             var xmlData = new SampleXmlRequest { Name = "Test", Age = 10 };
             var headers = new Dictionary<string, string>(); // Content-Type will be set automatically
-            var response = await client.Post("/post", xmlData, headers, isXml: true);
+            var response = await client.PostXml("/post", xmlData, headers);
             Console.WriteLine(response);
         }
 

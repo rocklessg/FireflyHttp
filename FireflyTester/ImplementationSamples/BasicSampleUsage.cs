@@ -1,6 +1,6 @@
 ﻿using FireflyHttp;
 
-namespace FireflyTester
+namespace FireflyTester.ImplementationSamples
 {
     public static class BasicSampleUsage
     {

@@ -11,8 +11,9 @@ namespace FireflyHttp
     /// </summary>
     public static class Firefly
     {
-        private static readonly HttpClient _httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
+        private static readonly HttpClient _httpClient = new() { Timeout = TimeSpan.FromSeconds(30) };
         private static ILogger? _logger;
+        private static readonly JsonSerializerOptions _jsonSerializerOptions = new() { PropertyNameCaseInsensitive = true };
 
         /// <summary>
         /// Sets the timeout duration for HTTP requests.
@@ -132,10 +133,10 @@ namespace FireflyHttp
         /// Internal method for sending HTTP requests with optional headers and payloads.
         /// </summary>        
         public static async Task<string> SendRequest<T>(
-            HttpMethod method, 
-            string url, 
-            object? headers = null, 
-            T? data = default, 
+            HttpMethod method,
+            string url,
+            object? headers = null,
+            T? data = default,
             bool isXml = false,
             HttpClient? client = null)
         {
@@ -200,6 +201,108 @@ namespace FireflyHttp
             catch (Exception ex)
             {
                 _logger?.LogError(ex, $"Error occurred while making request to {url}");
+                throw;
+            }
+        }
+
+
+        /// <summary>
+        /// Internal method for sending HTTP requests to handle file stream response.
+        /// </summary>
+        /// <param name="method"></param>
+        /// <param name="url"></param>
+        /// <param name="headers"></param>
+        /// <param name="content"></param>
+        /// <param name="client"></param>
+        /// <returns></returns>
+        public static async Task<Stream?> SendRequestAsStream(HttpMethod method, string url, Dictionary<string, string>? headers, HttpContent? content, HttpClient client)
+        {
+            try
+            {
+                using var request = new HttpRequestMessage(method, url) { Content = content };
+
+                if (headers is not null)
+                {
+                    foreach (var header in headers)
+                    {
+                        request.Headers.TryAddWithoutValidation(header.Key, header.Value);
+                    }
+                }
+
+                var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+                    throw new HttpRequestException($"Request failed with status {response.StatusCode}: {error}");
+                }
+
+                return await response.Content.ReadAsStreamAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, $"Error occurred while making request to {url}");
+                throw;
+            }
+        }
+
+        public static async Task<TResponse> SendRequest<TResponse>(
+                HttpMethod method,
+                string url,
+                Dictionary<string, string>? headers,
+                HttpContent? content,
+                HttpClient client,
+                bool isXml = false
+            )
+        {
+            try
+            {
+                using var request = new HttpRequestMessage(method, url) { Content = content };
+
+                if (headers is not null)
+                {
+                    foreach (var header in headers)
+                    {
+                        request.Headers.TryAddWithoutValidation(header.Key, header.Value);
+                    }
+                }
+
+                var response = await client.SendAsync(request);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+                    throw new HttpRequestException($"Request failed with status {response.StatusCode}: {error}");
+                }
+
+                var responseString = await response.Content.ReadAsStringAsync();
+
+                try
+                {
+                    if (isXml)
+                    {
+                        // XML Deserialization
+                        var serializer = new XmlSerializer(typeof(TResponse));
+                        using var stringReader = new StringReader(responseString);
+                        return (TResponse?)serializer.Deserialize(stringReader)
+                            ?? throw new InvalidOperationException("XML deserialization resulted in null.");
+                    }
+                    else
+                    {
+                        // JSON Deserialization
+                        return JsonSerializer.Deserialize<TResponse>(responseString, _jsonSerializerOptions)
+                            ?? throw new JsonException("Deserialization resulted in null.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger?.LogError(ex,"Deserialization error");
+                    throw new Exception($"Deserialization error: {ex.Message}\nResponse content: {responseString}", ex);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex,$"Error in SendRequest<{typeof(TResponse).Name}");
                 throw;
             }
         }
