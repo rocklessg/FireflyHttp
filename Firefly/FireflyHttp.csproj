@@ -26,7 +26,7 @@
 		<PackageReleaseNotes>
 			FireflyHttp v2.0.0 - New Features and Improvements
 
-			- Added FireflyWebSocket for real-time, bidirectional communication.
+			- Added FireflyWebSocket for real-time, bi-directional communication.
 			- Supports automatic reconnection with exponential backoff.
 			- Handles text and binary messages seamlessly.
 			- Added optional logging for flexibility.
@@ -34,7 +34,6 @@
 			WebSockets are now fully integrated into FireflyHttp, but usage remains completely optional.
 			If you were previously using a separate WebSocket client, you can now leverage FireflyHttp's built-in support
 			for a simpler and more streamlined experience.
-			Refactoring may be required to take advantage of its ease of use.
 
 			This updates maintains full compatibility with previous versions—no breaking changes introduced
 			For implementation examples, checkout https://github.com/rocklessg/FireflyHttp/tree/main/FireflyTester
