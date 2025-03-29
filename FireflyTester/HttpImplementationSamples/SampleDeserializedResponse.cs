@@ -1,7 +1,7 @@
 ﻿using System.Xml.Serialization;
 using FireflyHttp;
 
-namespace FireflyTester.ImplementationSamples
+namespace FireflyTester.HttpImplementationSamples
 {
     public class SampleDeserializedResponse
     {
