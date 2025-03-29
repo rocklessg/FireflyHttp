@@ -1,7 +1,7 @@
 ﻿using FireflyHttp;
 using FireflyHttp.Dtos;
 
-namespace FireflyTester.ImplementationSamples
+namespace FireflyTester.HttpImplementationSamples
 {
     public static class SampleUploadFiles
     {

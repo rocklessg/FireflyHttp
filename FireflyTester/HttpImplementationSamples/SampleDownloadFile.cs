@@ -1,6 +1,6 @@
 ﻿using FireflyHttp;
 
-namespace FireflyTester.ImplementationSamples
+namespace FireflyTester.HttpImplementationSamples
 {
     public static class SampleDownloadFile
     {

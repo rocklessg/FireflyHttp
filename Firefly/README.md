@@ -12,7 +12,7 @@ Install via NuGet:
 dotnet add package FireflyHttp
 ```
 
-## **Usage**
+## **How to use**
 
 ```using FireflyHttp;```
 
@@ -60,6 +60,18 @@ dotnet add package FireflyHttp
 	var response = await Firefly.PostXml("https://httpbin.org/post", data);
 	Console.WriteLine(response);
 
+# WebSocket Simple Connection
+
+	var webSocket = await FireflyWebSocket.ConnectAsync("wss://example.com/socket");
+    await webSocket.SendAsync("Hello from Firefly!"); // for text based events
+	await webSocket.SendBinaryAsync(new byte[] { 1, 2, 3, 4 }); //for binary based events
+
+	// event handling for incoming Text, Binary & Errors
+	webSocket.OnMessageReceived += text => Console.WriteLine($"Received: {text}");
+	webSocket.OnBinaryReceived += data => Console.WriteLine($"Received: {data}");
+    webSocket.OnError += ex => Console.WriteLine($"Error: {ex.Message}");
+
+
 
 ## **Features**
 
@@ -68,6 +80,7 @@ dotnet add package FireflyHttp
 ✔️ Custom headers support.
 ✔️ Configurable request timeout.
 ✔️ Logging support.
+✔️ WebSocket real-time events communications.
 
 
 ## **License**
@@ -91,3 +104,8 @@ MIT License
 - Support automatic response deserialization (JSON & XML)
 - Improved request logging.
 - Optimized request handling for performance improvements.
+
+- ### v2.0.0
+- Added `FireflyWebSocket` for real-time (bi-directional) event communication with automatic reconnection.
+- Handles text and binary events.
+- Added optional logging support.
