@@ -11,7 +11,7 @@ Console.WriteLine("Testing Firefly HTTP Requests...\n");
 
 //await AvancedSampleUsage.RunTests();
 //await SampleDownloadFile.RunTests();
-//await SampleDeserializedResponse.RunTests();
+await SampleDeserializedResponse.RunTests();
 
 #endregion
 
@@ -22,6 +22,6 @@ Console.WriteLine("Testing Firefly HTTP Requests...\n");
 
 string wsUrl = "wss://echo.websocket.org"; // Use a test WebSocket server
 var chatClient = new ChatClient();
-await chatClient.StartAsync(wsUrl);
+//await chatClient.StartAsync(wsUrl);
 
 #endregion
