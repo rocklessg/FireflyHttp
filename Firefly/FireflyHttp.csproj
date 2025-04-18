@@ -7,7 +7,7 @@
 
 		<!-- NuGet Package Metadata -->
 		<PackageId>FireflyHttp</PackageId>
-		<Version>2.0.0</Version>
+		<Version>2.1.0</Version>
 		<Authors>Abdulhafiz Suleiman</Authors>
 		<Company>Cradlee Edu</Company>
 		<Description>A lightweight C# HTTP client for RESTful and SOAP services with minimal configuration.</Description>
@@ -24,16 +24,11 @@
 
 		<!-- Release Notes -->
 		<PackageReleaseNotes>
-			FireflyHttp v2.0.0 - New Features and Improvements
+			FireflyHttp v2.1.0 - JSON POST Experience Improvements
 
-			- Added FireflyWebSocket for real-time, bi-directional communication.
-			- Supports automatic reconnection with exponential backoff.
-			- Handles text and binary messages seamlessly.
-			- Added optional logging for flexibility.
-
-			WebSockets are now fully integrated into FireflyHttp, but usage remains completely optional.
-			If you were previously using a separate WebSocket client, you can now leverage FireflyHttp's built-in support
-			for a simpler and more streamlined experience.
+			- Introduced a simpler, more expressive method for JSON-based POST requests.
+			- Added support for customizable response type deserialization.
+			- Improves upon v1.3.0 with more intuitive handling of request payloads and typed responses.
 
 			This updates maintains full compatibility with previous versions—no breaking changes introduced
 			For implementation examples, checkout https://github.com/rocklessg/FireflyHttp/tree/main/FireflyTester

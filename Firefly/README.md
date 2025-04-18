@@ -60,6 +60,14 @@ dotnet add package FireflyHttp
 	var response = await Firefly.PostXml("https://httpbin.org/post", data);
 	Console.WriteLine(response);
 
+# Simplified JSON Call With Custome Response Type
+	
+	var client = new FireflyClient("https://api.example.com");
+    var result = await client.SendJson<YourResponseType>(
+    HttpMethod.Post,
+    "/some-endpoint",
+    new MyRequestType { Property = "value" });
+
 # WebSocket Simple Connection
 
 	var webSocket = await FireflyWebSocket.ConnectAsync("wss://example.com/socket");
@@ -70,7 +78,6 @@ dotnet add package FireflyHttp
 	webSocket.OnMessageReceived += text => Console.WriteLine($"Received: {text}");
 	webSocket.OnBinaryReceived += data => Console.WriteLine($"Received: {data}");
     webSocket.OnError += ex => Console.WriteLine($"Error: {ex.Message}");
-
 
 
 ## **Features**
@@ -105,7 +112,13 @@ MIT License
 - Improved request logging.
 - Optimized request handling for performance improvements.
 
-- ### v2.0.0
+### v2.0.0
 - Added `FireflyWebSocket` for real-time (bi-directional) event communication with automatic reconnection.
 - Handles text and binary events.
 - Added optional logging support.
+
+### v2.1.0
+- Introduces update to Serializes your request object as JSON
+- Sets Content-Type: application/json
+- Deserializes the API response to `YourResponseType`
+- Json and XML support `SendRequestXml<T>()` was introduced in v1.3.0 and still fully supported.

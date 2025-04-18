@@ -1,5 +1,7 @@
 ﻿using FireflyHttp.Dtos;
 using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
 
 namespace FireflyHttp
 {
@@ -112,13 +114,28 @@ namespace FireflyHttp
         }
 
         /// <summary>
-        /// Sends an HTTP request and returns a deserialized json response object.
+        /// Sends an HTTP request without payload and returns a deserialized json response object.
         /// </summary>
         public async Task<TResponse?> SendRequest<TResponse>(HttpMethod method, string url, Dictionary<string, string>? headers = null, HttpContent? content = null)
         {
             return await Firefly.SendRequest<TResponse>(method, url, MergeHeaders(headers), content, _client);
         }
-        
+
+        /// <summary>
+        /// Sends an HTTP request with payload and returns a deserialized json response object.
+        /// </summary>
+        public Task<TResponse?> SendJson<TResponse>(
+            HttpMethod method,
+            string url,
+            object body,
+            Dictionary<string, string>? headers = null)
+        {
+            var json = JsonSerializer.Serialize(body);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            return SendRequest<TResponse>(method, url, headers, content);
+        }
+
+
         /// <summary>
         /// Sends an HTTP request and returns a deserialized Xml response object.
         /// </summary>

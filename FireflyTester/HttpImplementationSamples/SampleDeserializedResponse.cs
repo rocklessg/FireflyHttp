@@ -7,10 +7,11 @@ namespace FireflyTester.HttpImplementationSamples
     {
         public static async Task RunTests()
         {
-            await TestRestfulRequest();
+          //  await TestGetRestfulRequest();
+            await TestPostRestfulRequest();
            // await TestXmlRequest();
         }
-        private static async Task TestRestfulRequest()
+        private static async Task TestGetRestfulRequest()
         {
             var client = new FireflyClient("https://jsonplaceholder.typicode.com");
 
@@ -32,6 +33,45 @@ namespace FireflyTester.HttpImplementationSamples
                 );
 
                 Console.WriteLine($"Response for Restful Api call. Title: {response?.Title}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex + "Error in TestRestfulRequest");
+            }
+        }
+
+        /// <summary>
+        /// Posts Json data to a specified URL and deserializes the response into a specified object type.
+        /// </summary>
+        /// <returns></returns>
+        private static async Task TestPostRestfulRequest()
+        {
+            var client = new FireflyClient("https://httpbin.org");
+
+            // Add headers if needed
+            client.SetDefaultHeaders(new Dictionary<string, string>
+                {
+                    { "User-Agent", "FireflyHttp-Test" },
+                    { "X-Custom-Header", "DefaultHeader" }
+                });
+
+            try
+            {
+                // Authenticate if the endpoint needed it
+                var headers = new Dictionary<string, string> { { "Authorization", "Bearer test_token" } };
+                
+                var response = await client.SendJson<object>( // Or your response type
+                    HttpMethod.Post,
+                    "/post",
+                    new YourRequestObjectPayload
+                    {
+                        To = "someone@example.com",
+                        Subject = "Hello!",
+                        Body = "You're doing great!",
+                        From = "FireflyHttp"
+                    }, headers);
+
+                Console.WriteLine($"Response for Restful Api call. Title: {response}");
             }
             catch (Exception ex)
             {
@@ -72,6 +112,14 @@ namespace FireflyTester.HttpImplementationSamples
             public int Id { get; set; }
             public string Title { get; set; }
             public string Body { get; set; }
+        }
+        
+        public class YourRequestObjectPayload
+        {
+            public string To { get; set; }
+            public string From { get; set; }
+            public string Body { get; set; }
+            public string Subject { get; set; }
         }
 
         // Sample XML response model
