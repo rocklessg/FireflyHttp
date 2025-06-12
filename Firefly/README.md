@@ -79,6 +79,62 @@ dotnet add package FireflyHttp
 	webSocket.OnBinaryReceived += data => Console.WriteLine($"Received: {data}");
     webSocket.OnError += ex => Console.WriteLine($"Error: {ex.Message}");
 
+# gRpc
+	using FireflyGrpc;
+
+
+	// Connect to gRPC Server
+	var grpc = await FireflyGrpcClient<Greeter.GreeterClient>.ConnectAsync(
+		"https://localhost:5001",
+		channel => new Greeter.GreeterClient(channel)
+	);
+
+	// Unary Call (Simple Request-Response)
+	var reply = await grpc.Client.SayHelloAsync(new HelloRequest { Name = "Firefly" });
+	Console.WriteLine(reply.Message);
+
+	// Server Streaming
+	using var call = grpc.Client.StreamMessages(new StreamRequest { Name = "Firefly" });
+	await foreach (var message in call.ResponseStream.ReadAllAsync())
+	{
+		Console.WriteLine($"Message: {message.Message}");
+	}
+
+	// Client Streaming
+	using var call = grpc.Client.ClientStreamMessages();
+	for (int i = 1; i <= 3; i++)
+	{
+		await call.RequestStream.WriteAsync(new ClientRequest { Message = $"Hello {i}" });
+	}
+	await call.RequestStream.CompleteAsync();
+
+	var response = await call.ResponseAsync;
+	Console.WriteLine($"Confirmation: {response.Confirmation}");
+
+	// Bidirectional Streaming (Duplex) Chat functionality
+	using var chat = grpc.Client.Chat();
+	var sendingTask = Task.Run(async () =>
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			await chat.RequestStream.WriteAsync(new ChatMessage { User = "Client", Message = $"Ping {i}" });
+			await Task.Delay(1000);
+		}
+		await chat.RequestStream.CompleteAsync();
+	});
+
+	var receivingTask = Task.Run(async () =>
+	{
+		await foreach (var message in chat.ResponseStream.ReadAllAsync())
+		{
+			Console.WriteLine($"{message.User}: {message.Message}");
+		}
+	});
+
+	await Task.WhenAll(sendingTask, receivingTask);
+
+
+
 
 ## **Features**
 
@@ -88,6 +144,7 @@ dotnet add package FireflyHttp
 ✔️ Configurable request timeout.
 ✔️ Logging support.
 ✔️ WebSocket real-time events communications.
+✔️ gRpc support.
 
 
 ## **License**
@@ -122,3 +179,9 @@ MIT License
 - Sets Content-Type: application/json
 - Deserializes the API response to `YourResponseType`
 - Json and XML support `SendRequestXml<T>()` was introduced in v1.3.0 and still fully supported.
+
+### v2.2.0
+- Introduced `FireflyGrpcClient<TClient>` for gRPC client support.
+- Connect to gRPC services with simplified API and support for strongly-typed service contracts.
+- Supports unary and streaming methods using generated gRPC stubs.
+- Minimal configuration, seamless integration alongside HTTP and WebSocket APIs.

@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using FireflyTester.GrpcImplementationSamples;
 using FireflyTester.HttpImplementationSamples;
 using FireflyTester.WebSocketImplementationSamples;
 
@@ -11,7 +12,7 @@ Console.WriteLine("Testing Firefly HTTP Requests...\n");
 
 //await AvancedSampleUsage.RunTests();
 //await SampleDownloadFile.RunTests();
-await SampleDeserializedResponse.RunTests();
+//await SampleDeserializedResponse.RunTests();
 
 #endregion
 
@@ -23,5 +24,12 @@ await SampleDeserializedResponse.RunTests();
 string wsUrl = "wss://echo.websocket.org"; // Use a test WebSocket server
 var chatClient = new ChatClient();
 //await chatClient.StartAsync(wsUrl);
+
+#endregion
+
+#region gRPC
+
+var greeterClient = new GreeterTestClient();
+//await greeterClient.RunAsync();
 
 #endregion

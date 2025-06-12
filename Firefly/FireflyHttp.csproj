@@ -7,7 +7,7 @@
 
 		<!-- NuGet Package Metadata -->
 		<PackageId>FireflyHttp</PackageId>
-		<Version>2.1.0</Version>
+		<Version>2.2.0</Version>
 		<Authors>Abdulhafiz Suleiman</Authors>
 		<Company>Cradlee Edu</Company>
 		<Description>A lightweight C# HTTP client for RESTful and SOAP services with minimal configuration.</Description>
@@ -24,11 +24,13 @@
 
 		<!-- Release Notes -->
 		<PackageReleaseNotes>
-			FireflyHttp v2.1.0 - JSON POST Experience Improvements
+			FireflyHttp v2.2.0 – gRPC Client Support Added
 
-			- Introduced a simpler, more expressive method for JSON-based POST requests.
-			- Added support for customizable response type deserialization.
-			- Improves upon v1.3.0 with more intuitive handling of request payloads and typed responses.
+			- Introduced FireflyGrpc for seamless gRPC integration.
+			- Supports unary, server streaming, client streaming, and bidirectional (duplex) streaming out of the box.
+			- Built-in header management for authenticated or custom gRPC requests.
+			- Automatically handles GrpcChannel setup and client instantiation.
+			- Enables real-time communication over gRPC with minimal setup.
 
 			This updates maintains full compatibility with previous versions—no breaking changes introduced
 			For implementation examples, checkout https://github.com/rocklessg/FireflyHttp/tree/main/FireflyTester
@@ -43,6 +45,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Google.Protobuf" Version="3.31.1" />
+		<PackageReference Include="Grpc.Net.Client" Version="2.71.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.1" />
 	</ItemGroup>
 
